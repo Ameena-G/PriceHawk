@@ -3,22 +3,6 @@
 # PriceHawk — AI Price Intelligence Agent
 
 **Find the best deal across Amazon, Flipkart & Croma in real time.**  
-No retailer APIs. No guessing. Pure Gemini 2.0 Flash vision.
-
-<br/>
-
-[![Gemini](https://img.shields.io/badge/Gemini_2.0_Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
-[![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-34A853?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com/run)
-[![Firestore](https://img.shields.io/badge/Firestore-FF6F00?style=flat-square&logo=firebase&logoColor=white)](https://firebase.google.com/products/firestore)
-[![Node.js](https://img.shields.io/badge/Node.js_20+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![React](https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
-[![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)](https://playwright.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-
-<br/>
-
-![PriceHawk Demo](https://placehold.co/900x480/062F35/7FFFD4?text=PriceHawk+Demo+Screenshot&font=playfair-display)
-
 </div>
 
 ## 🦅 What is PriceHawk?
