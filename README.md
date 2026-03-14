@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/-%F0%9F%A6%85%20PRICEHAWK-062F35?style=for-the-badge&labelColor=030D0E&color=7FFFD4" alt="PriceHawk" height="40"/>
-
 # PriceHawk — AI Price Intelligence Agent
 
 **Find the best deal across Amazon, Flipkart & Croma in real time.**  
@@ -19,32 +17,9 @@ No retailer APIs. No guessing. Pure Gemini 2.0 Flash vision.
 
 <br/>
 
-> 🏆 **Hackathon Submission** — Google Cloud × Gemini Hackathon  
-> **Category:** UI Navigator ☸️ — Visual UI Understanding & Interaction
-
-<br/>
-
 ![PriceHawk Demo](https://placehold.co/900x480/062F35/7FFFD4?text=PriceHawk+Demo+Screenshot&font=playfair-display)
 
 </div>
-
----
-
-## 📖 Table of Contents
-
-- [What is PriceHawk?](#-what-is-pricehawk)
-- [How It Works](#-how-it-works)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Quick Start (Local)](#-quick-start-local)
-- [Google Cloud Deployment](#️-google-cloud-deployment)
-- [Project Structure](#-project-structure)
-- [Hackathon Checklist](#-hackathon-checklist)
-- [Findings & Learnings](#-findings--learnings)
-- [License](#-license)
-
----
 
 ## 🦅 What is PriceHawk?
 
@@ -208,78 +183,12 @@ npm install
 Open **two terminals**:
 
 ```bash
-# Terminal 1 — Backend (port 8080)
+# Terminal 1 — Backend
 cd backend && npm run dev
 
-# Terminal 2 — Frontend (port 3000)
+# Terminal 2 — Frontend 
 cd frontend && npm run dev
 ```
-
-Open **http://localhost:3000** and search for any product!
-
-### Expected output
-
-```
-🦅 PriceHawk API running on port 8080
-
-🌐 Amazon India...
-   → HTTP 200 | Title: "Amazon.in : iPhone 15"
-   → Screenshot: 164KB
-   ✅ Amazon: 8/12 relevant products
-
-🌐 Flipkart...
-   ✅ Flipkart: 6/8 relevant products
-
-✅ TOTAL: 14 products from [Amazon, Flipkart]
-```
-
----
-
-## ☁️ Google Cloud Deployment
-
-### Prerequisites
-
-- [`gcloud` CLI](https://cloud.google.com/sdk/docs/install) installed and authenticated
-- [Docker](https://www.docker.com) installed
-- GCP project with billing enabled
-
-### One-command deploy
-
-```bash
-# Set your project ID
-export GCP_PROJECT_ID=your-project-id
-export GCP_REGION=us-central1
-
-# Add secrets to Secret Manager
-echo "YOUR_GEMINI_KEY" | gcloud secrets create gemini-api-key --data-file=-
-echo "your@gmail.com"  | gcloud secrets create email-user --data-file=-
-echo "your_app_pass"   | gcloud secrets create email-pass --data-file=-
-
-# Deploy everything
-chmod +x deploy.sh
-./deploy.sh
-```
-
-The script will:
-1. ✅ Enable Cloud Run, Firestore, and Container Registry APIs
-2. ✅ Create Firestore database in your region
-3. ✅ Build and push Docker images to GCR
-4. ✅ Deploy backend to Cloud Run (2 vCPU / 2GB RAM for Playwright)
-5. ✅ Deploy frontend to Cloud Run
-6. ✅ Output your live URLs
-
-### Verify deployment
-
-```bash
-# Check services are running
-gcloud run services list --region=us-central1
-
-# Health check
-curl https://YOUR_BACKEND_URL/health
-# → {"status":"ok","service":"pricehawk-api"}
-```
-
----
 
 ## 📁 Project Structure
 
@@ -318,23 +227,6 @@ pricehawk/
 └── README.md
 ```
 
----
-
-## ✅ Hackathon Checklist
-
-| Requirement | Status | Implementation |
-|---|---|---|
-| Gemini model | ✅ | `gemini-2.0-flash` via `@google/genai` npm package |
-| Google GenAI SDK | ✅ | `npm install @google/genai` — see `backend/src/services/gemini.js` |
-| Google Cloud service | ✅ | Cloud Run (hosting) + Firestore (database) |
-| UI Navigator category | ✅ | Gemini reads screenshots, Playwright executes browser actions |
-| Multimodal inputs | ✅ | JPEG screenshots sent as `inlineData` to Gemini vision |
-| Executable actions | ✅ | Navigate, scroll, screenshot, extract — full agentic loop |
-| Hosted on GCP | ✅ | Both frontend and backend deployed to Cloud Run |
-| No simple text-in/text-out | ✅ | Image → AI → structured JSON → ranked UI |
-
----
-
 ## 🔬 Findings & Learnings
 
 ### Technical Challenges
@@ -358,20 +250,7 @@ Running from India, US sites like eBay and Walmart immediately serve CAPTCHA pag
 - **UX must compensate for latency**: Cloud Run cold starts + browser automation = 20–40s wait times. The animated 4-stage pipeline makes this feel intentional and actually builds anticipation.
 - **Price validation is non-trivial**: Without tight price bounds ($1–$15,000), scrapers grab bundle prices, subscription totals, and random numbers on the page. Every extracted price needs sanity checking.
 
----
 
-## 🔑 Environment Variables
-
-| Variable | Required | Description |
-|---|---|---|
-| `GEMINI_API_KEY` | ✅ | From [aistudio.google.com](https://aistudio.google.com) |
-| `GCP_PROJECT_ID` | ✅ | Your Google Cloud project ID |
-| `EMAIL_USER` | Optional | Gmail address for email export |
-| `EMAIL_PASS` | Optional | Gmail App Password (not your login password) |
-| `FRONTEND_URL` | Optional | CORS origin (default: `*`) |
-| `PORT` | Optional | Server port (default: `8080`) |
-
----
 
 ## 🤝 Contributing
 
@@ -391,10 +270,6 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**Built with ❤️ for the Google Cloud × Gemini Hackathon**
-
-[![Gemini](https://img.shields.io/badge/Gemini_2.0_Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
-[![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com)
 
 *PriceHawk — UI Navigator Category · Real-time Vision Agent · No Retailer APIs*
 
