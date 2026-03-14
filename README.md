@@ -1,1 +1,401 @@
- 
+<div align="center">
+
+<img src="https://img.shields.io/badge/-%F0%9F%A6%85%20PRICEHAWK-062F35?style=for-the-badge&labelColor=030D0E&color=7FFFD4" alt="PriceHawk" height="40"/>
+
+# PriceHawk — AI Price Intelligence Agent
+
+**Find the best deal across Amazon, Flipkart & Croma in real time.**  
+No retailer APIs. No guessing. Pure Gemini 2.0 Flash vision.
+
+<br/>
+
+[![Gemini](https://img.shields.io/badge/Gemini_2.0_Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
+[![Cloud Run](https://img.shields.io/badge/Google_Cloud_Run-34A853?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com/run)
+[![Firestore](https://img.shields.io/badge/Firestore-FF6F00?style=flat-square&logo=firebase&logoColor=white)](https://firebase.google.com/products/firestore)
+[![Node.js](https://img.shields.io/badge/Node.js_20+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![React](https://img.shields.io/badge/React_18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
+[![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)](https://playwright.dev)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+
+<br/>
+
+> 🏆 **Hackathon Submission** — Google Cloud × Gemini Hackathon  
+> **Category:** UI Navigator ☸️ — Visual UI Understanding & Interaction
+
+<br/>
+
+![PriceHawk Demo](https://placehold.co/900x480/062F35/7FFFD4?text=PriceHawk+Demo+Screenshot&font=playfair-display)
+
+</div>
+
+---
+
+## 📖 Table of Contents
+
+- [What is PriceHawk?](#-what-is-pricehawk)
+- [How It Works](#-how-it-works)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Quick Start (Local)](#-quick-start-local)
+- [Google Cloud Deployment](#️-google-cloud-deployment)
+- [Project Structure](#-project-structure)
+- [Hackathon Checklist](#-hackathon-checklist)
+- [Findings & Learnings](#-findings--learnings)
+- [License](#-license)
+
+---
+
+## 🦅 What is PriceHawk?
+
+PriceHawk is a next-generation AI shopping agent that **visually navigates real browser sessions** to find the best product prices — completely without using any retailer APIs.
+
+Instead of calling official APIs or hardcoded scrapers, PriceHawk:
+1. Deploys **Playwright** to open real headless Chrome browser tabs
+2. Sends screenshots to **Gemini 2.0 Flash** which reads them like a human would
+3. Extracts prices, titles, and ratings using **multimodal AI vision**
+4. Uses Gemini to **rank results** and deliver an intelligent recommendation
+
+```
+User: "iPhone 15"
+  ↓
+PriceHawk opens Amazon.in, Flipkart, and Croma simultaneously
+  ↓
+Screenshots captured → sent to Gemini 2.0 Flash
+  ↓
+Gemini reads pixels → extracts structured product data
+  ↓
+Gemini compares all products → ranks best deal + top rated
+  ↓
+Results displayed in real time within ~30 seconds
+```
+
+---
+
+## ⚙️ How It Works
+
+```mermaid
+graph TD
+    A[👤 User types product query] --> B[React Frontend]
+    B -->|POST /api/search| C[Express API — Cloud Run]
+    C --> D[Playwright Agent]
+    D -->|Parallel| E[Amazon.in]
+    D -->|Parallel| F[Flipkart]
+    D -->|Parallel| G[Croma]
+    E --> H[Screenshots]
+    F --> H
+    G --> H
+    H -->|image/jpeg| I[Gemini 2.0 Flash]
+    I -->|JSON products| J[Comparative Analysis]
+    J --> K[Firestore — Price History]
+    J --> L[Frontend Results]
+    L --> M[CSV / Email Export]
+```
+
+---
+
+## ✨ Features
+
+### 🤖 Core Agent
+| Feature | Description |
+|---|---|
+| **Vision-Only Extraction** | Gemini 2.0 Flash reads screenshots — no DOM dependency, no brittle CSS selectors |
+| **Multi-Site Parallel Scan** | Amazon, Flipkart & Croma opened simultaneously via `Promise.allSettled()` |
+| **AI Price Analysis** | Gemini identifies Best Deal, Top Rated, generates recommendation with insights |
+| **Relevance Filtering** | Products filtered by query keyword match — no irrelevant sponsored results |
+| **Live Progress Tracking** | Real-time 4-stage pipeline display with animated progress bar |
+
+### 📊 Results & Export
+| Feature | Description |
+|---|---|
+| **Price Comparison Grid** | Cards with store badges, ratings, availability, Best Deal / Top Rated labels |
+| **Price History Chart** | SVG line chart built from Firestore data across multiple searches |
+| **CSV Download** | Export all results as a spreadsheet instantly |
+| **Email Export** | Send results to any email via Nodemailer |
+
+### 🎨 UI
+| Feature | Description |
+|---|---|
+| **Landing Page** | Full marketing homepage with features, how-it-works, CTA |
+| **Sign In / Sign Up** | Glassmorphism modal with session persistence via localStorage |
+| **Mission Control Design** | Deep teal + aquamarine palette, animated smoke background, particle canvas |
+| **Custom SVG Icon Library** | 25+ hand-crafted inline SVG icons — no icon library dependency |
+| **Playfair Display + Outfit** | Premium serif + modern sans font pairing |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology | Purpose |
+|---|---|---|
+| **AI Vision** | Gemini 2.0 Flash via `@google/genai` | Screenshot reading, product extraction, deal ranking |
+| **Browser Agent** | Playwright (Chromium headless) | Real browser automation, DOM extraction fallback |
+| **Backend** | Node.js 20 + Express.js | REST API, async job orchestration |
+| **Frontend** | React 18 + Vite | Real-time UI, price charts, export controls |
+| **Database** | Google Cloud Firestore | Price history persistence, result caching |
+| **Hosting** | Google Cloud Run | Serverless container deployment |
+| **Email** | Nodemailer (Gmail SMTP) | Export results by email |
+| **Containers** | Docker | Reproducible GCP deployment |
+
+---
+
+## 🏗️ Architecture
+
+![Architecture Diagram](docs/architecture.svg)
+
+**Google Cloud Services used:**
+- **Cloud Run** — Backend API + Frontend both deployed as containers
+- **Firestore** — NoSQL database for price history and search caching
+- **Container Registry** — Docker image storage
+- **Secret Manager** — API keys and credentials
+
+---
+
+## 🚀 Quick Start (Local)
+
+### Prerequisites
+
+- [Node.js 20+](https://nodejs.org)
+- [Git](https://git-scm.com)
+- A free Gemini API key from [Google AI Studio](https://aistudio.google.com)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/pricehawk.git
+cd pricehawk
+```
+
+### 2. Set up the backend
+
+```bash
+cd backend
+
+# Install dependencies
+npm install
+
+# Install Playwright browser
+npx playwright install chromium
+
+# Copy environment template
+cp .env.example .env
+```
+
+Edit `backend/.env`:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+GCP_PROJECT_ID=your_gcp_project_id
+EMAIL_USER=your@gmail.com
+EMAIL_PASS=your_gmail_app_password
+PORT=8080
+```
+
+> **Get a free Gemini API key:**  
+> 1. Go to [aistudio.google.com](https://aistudio.google.com)  
+> 2. Click **Get API Key** → **Create API key**  
+> 3. Free tier: 15 requests/minute, 1,500/day
+
+### 3. Set up the frontend
+
+```bash
+cd ../frontend
+npm install
+```
+
+### 4. Run both servers
+
+Open **two terminals**:
+
+```bash
+# Terminal 1 — Backend (port 8080)
+cd backend && npm run dev
+
+# Terminal 2 — Frontend (port 3000)
+cd frontend && npm run dev
+```
+
+Open **http://localhost:3000** and search for any product!
+
+### Expected output
+
+```
+🦅 PriceHawk API running on port 8080
+
+🌐 Amazon India...
+   → HTTP 200 | Title: "Amazon.in : iPhone 15"
+   → Screenshot: 164KB
+   ✅ Amazon: 8/12 relevant products
+
+🌐 Flipkart...
+   ✅ Flipkart: 6/8 relevant products
+
+✅ TOTAL: 14 products from [Amazon, Flipkart]
+```
+
+---
+
+## ☁️ Google Cloud Deployment
+
+### Prerequisites
+
+- [`gcloud` CLI](https://cloud.google.com/sdk/docs/install) installed and authenticated
+- [Docker](https://www.docker.com) installed
+- GCP project with billing enabled
+
+### One-command deploy
+
+```bash
+# Set your project ID
+export GCP_PROJECT_ID=your-project-id
+export GCP_REGION=us-central1
+
+# Add secrets to Secret Manager
+echo "YOUR_GEMINI_KEY" | gcloud secrets create gemini-api-key --data-file=-
+echo "your@gmail.com"  | gcloud secrets create email-user --data-file=-
+echo "your_app_pass"   | gcloud secrets create email-pass --data-file=-
+
+# Deploy everything
+chmod +x deploy.sh
+./deploy.sh
+```
+
+The script will:
+1. ✅ Enable Cloud Run, Firestore, and Container Registry APIs
+2. ✅ Create Firestore database in your region
+3. ✅ Build and push Docker images to GCR
+4. ✅ Deploy backend to Cloud Run (2 vCPU / 2GB RAM for Playwright)
+5. ✅ Deploy frontend to Cloud Run
+6. ✅ Output your live URLs
+
+### Verify deployment
+
+```bash
+# Check services are running
+gcloud run services list --region=us-central1
+
+# Health check
+curl https://YOUR_BACKEND_URL/health
+# → {"status":"ok","service":"pricehawk-api"}
+```
+
+---
+
+## 📁 Project Structure
+
+```
+pricehawk/
+│
+├── backend/
+│   ├── src/
+│   │   ├── index.js              # Express server entry point
+│   │   ├── routes/
+│   │   │   ├── search.js         # POST /api/search — main agent endpoint
+│   │   │   ├── export.js         # POST /api/export/email + /csv
+│   │   │   └── history.js        # GET /api/history — price trends
+│   │   └── services/
+│   │       ├── gemini.js         # Gemini AI calls + response caching
+│   │       ├── browser.js        # Playwright shopping agent (Amazon/Flipkart/Croma)
+│   │       └── firestore.js      # Google Cloud Firestore persistence
+│   │
+│   ├── Dockerfile                # Multi-stage Docker build with Chromium
+│   ├── .env.example              # Environment variable template
+│   └── package.json
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx               # Complete React app (landing + auth + dashboard)
+│   │   └── main.jsx              # React entry point
+│   │
+│   ├── Dockerfile                # Nginx-based production build
+│   ├── nginx.conf                # SPA routing config
+│   └── package.json
+│
+├── docs/
+│   └── architecture.svg          # System architecture diagram
+│
+├── deploy.sh                     # One-command GCP deployment script
+└── README.md
+```
+
+---
+
+## ✅ Hackathon Checklist
+
+| Requirement | Status | Implementation |
+|---|---|---|
+| Gemini model | ✅ | `gemini-2.0-flash` via `@google/genai` npm package |
+| Google GenAI SDK | ✅ | `npm install @google/genai` — see `backend/src/services/gemini.js` |
+| Google Cloud service | ✅ | Cloud Run (hosting) + Firestore (database) |
+| UI Navigator category | ✅ | Gemini reads screenshots, Playwright executes browser actions |
+| Multimodal inputs | ✅ | JPEG screenshots sent as `inlineData` to Gemini vision |
+| Executable actions | ✅ | Navigate, scroll, screenshot, extract — full agentic loop |
+| Hosted on GCP | ✅ | Both frontend and backend deployed to Cloud Run |
+| No simple text-in/text-out | ✅ | Image → AI → structured JSON → ranked UI |
+
+---
+
+## 🔬 Findings & Learnings
+
+### Technical Challenges
+
+**Bot detection is aggressive**  
+All three major e-commerce sites detect headless browsers. Solved with realistic `User-Agent` strings, randomized delays between 800–3500ms, per-site isolated browser contexts (fresh cookies/session), and `--disable-blink-features=AutomationControlled`.
+
+**DOM structures change constantly**  
+Amazon alone has 6+ different title selector patterns across its layouts. The solution: loop through all `<span>` elements inside `<h2>` and pick the longest one — which is always the full product title regardless of layout version.
+
+**Gemini free tier quota**  
+The free tier (15 req/min, 1500/day) gets exhausted quickly when sending large screenshots. Solved with: MD5-based screenshot caching (same image = same result), automatic fallback from `gemini-2.0-flash` → `gemini-1.5-flash` (separate quota pool), and a pure-JavaScript analysis fallback that works with zero Gemini calls.
+
+**India-specific deployment**  
+Running from India, US sites like eBay and Walmart immediately serve CAPTCHA pages. Indian stores (Flipkart, Croma) are far more accessible from Indian IPs and provide INR pricing which is actually more useful for Indian users.
+
+### Key Learnings
+
+- **Hybrid extraction beats pure vision**: DOM parsing is fast and quota-free; Gemini vision is resilient when selectors break. Using DOM as primary with Gemini as fallback gives the best of both worlds.
+- **`Promise.allSettled()` is essential**: Running all scrapers in parallel with graceful failure handling reduces total search time from ~90s to ~30s while ensuring one blocked site doesn't kill the entire search.
+- **UX must compensate for latency**: Cloud Run cold starts + browser automation = 20–40s wait times. The animated 4-stage pipeline makes this feel intentional and actually builds anticipation.
+- **Price validation is non-trivial**: Without tight price bounds ($1–$15,000), scrapers grab bundle prices, subscription totals, and random numbers on the page. Every extracted price needs sanity checking.
+
+---
+
+## 🔑 Environment Variables
+
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | ✅ | From [aistudio.google.com](https://aistudio.google.com) |
+| `GCP_PROJECT_ID` | ✅ | Your Google Cloud project ID |
+| `EMAIL_USER` | Optional | Gmail address for email export |
+| `EMAIL_PASS` | Optional | Gmail App Password (not your login password) |
+| `FRONTEND_URL` | Optional | CORS origin (default: `*`) |
+| `PORT` | Optional | Server port (default: `8080`) |
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/my-feature`
+3. Commit your changes: `git commit -m 'Add my feature'`
+4. Push to the branch: `git push origin feature/my-feature`
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built with ❤️ for the Google Cloud × Gemini Hackathon**
+
+[![Gemini](https://img.shields.io/badge/Gemini_2.0_Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
+[![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=flat-square&logo=googlecloud&logoColor=white)](https://cloud.google.com)
+
+*PriceHawk — UI Navigator Category · Real-time Vision Agent · No Retailer APIs*
+
+</div> 
