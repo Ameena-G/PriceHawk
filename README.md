@@ -5,6 +5,17 @@
 **Find the best deal across Amazon, Flipkart & Croma in real time.**  
 </div>
 
+## Screenshots
+
+### Landing Page
+![Landing](docs/Landing.png)
+
+## Application Dashboard
+![Dashboard Screenshot](docs/Dashboard.png)
+
+## Results Page
+![Result Screenshot](docs/Result.png)
+
 ## 🦅 What is PriceHawk?
 
 PriceHawk is a next-generation AI shopping agent that **visually navigates real browser sessions** to find the best product prices — completely without using any retailer APIs.
