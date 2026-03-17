@@ -234,6 +234,12 @@ Running from India, US sites like eBay and Walmart immediately serve CAPTCHA pag
 - **UX must compensate for latency**: Cloud Run cold starts + browser automation = 20–40s wait times. The animated 4-stage pipeline makes this feel intentional and actually builds anticipation.
 - **Price validation is non-trivial**: Without tight price bounds ($1–$15,000), scrapers grab bundle prices, subscription totals, and random numbers on the page. Every extracted price needs sanity checking.
 
+
+## Demo Video
+
+[![Watch the Demo]](https://youtu.be/v0wLLktL9HI)
+
+
 ---
 
 ## 📜 License
